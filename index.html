@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cash Drawer Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main Content -->
+    <div class="container" id="app">
+        <div class="header">
+            <h1>Cash Drawer Calculator</h1>
+            <div class="subtitle">[ End of Day Cash Counting System ]</div>
+        </div>
+
+        <div class="status-bar">
+            <span class="status-indicator"><span class="status-dot"></span> SYSTEM READY</span>
+        </div>
+
+        <!-- Expected Total Input -->
+        <div class="form-group">
+            <label>// EXPECTED TOTAL (System-calculated amount)</label>
+            <div class="expected-input-wrapper">
+                <input type="number" id="expectedTotal" placeholder="0.00" step="0.01" min="0">
+            </div>
+        </div>
+
+        <!-- Paper Money Section -->
+        <div class="denomination-section">
+            <div class="section-title">// PAPER MONEY (Ringgit Malaysia)</div>
+            
+            <div class="denomination-row">
+                <span class="denomination-label">RM 100</span>
+                <input type="number" class="qty-input" id="qty-100" data-value="100" min="0" placeholder="0">
+                <span class="equals-sign">=</span>
+                <input type="text" class="denomination-total" id="total-100" value="RM 0.00" readonly>
+            </div>
+
+            <div class="denomination-row">
+                <span class="denomination-label">RM 50</span>
+                <input type="number" class="qty-input" id="qty-50" data-value="50" min="0" placeholder="0">
+                <span class="equals-sign">=</span>
+                <input type="text" class="denomination-total" id="total-50" value="RM 0.00" readonly>
+            </div>
+
+            <div class="denomination-row">
+                <span class="denomination-label">RM 20</span>
+                <input type="number" class="qty-input" id="qty-20" data-value="20" min="0" placeholder="0">
+                <span class="equals-sign">=</span>
+                <input type="text" class="denomination-total" id="total-20" value="RM 0.00" readonly>
+            </div>
+
+            <div class="denomination-row">
+                <span class="denomination-label">RM 10</span>
+                <input type="number" class="qty-input" id="qty-10" data-value="10" min="0" placeholder="0">
+                <span class="equals-sign">=</span>
+                <input type="text" class="denomination-total" id="total-10" value="RM 0.00" readonly>
+            </div>
+
+            <div class="denomination-row">
+                <span class="denomination-label">RM 5</span>
+                <input type="number" class="qty-input" id="qty-5" data-value="5" min="0" placeholder="0">
+                <span class="equals-sign">=</span>
+                <input type="text" class="denomination-total" id="total-5" value="RM 0.00" readonly>
+            </div>
+
+            <div class="denomination-row">
+                <span class="denomination-label">RM 1</span>
+                <input type="number" class="qty-input" id="qty-1" data-value="1" min="0" placeholder="0">
+                <span class="equals-sign">=</span>
+                <input type="text" class="denomination-total" id="total-1" value="RM 0.00" readonly>
+            </div>
+        </div>
+
+        <!-- Coins Section -->
+        <div class="denomination-section">
+            <div class="section-title">// COINS (Sen)</div>
+
+            <div class="denomination-row">
+                <span class="denomination-label">50 sen</span>
+                <input type="number" class="qty-input" id="qty-050" data-value="0.50" min="0" placeholder="0" step="1">
+                <span class="equals-sign">=</span>
+                <input type="text" class="denomination-total" id="total-050" value="RM 0.00" readonly>
+            </div>
+
+            <div class="denomination-row">
+                <span class="denomination-label">20 sen</span>
+                <input type="number" class="qty-input" id="qty-020" data-value="0.20" min="0" placeholder="0" step="1">
+                <span class="equals-sign">=</span>
+                <input type="text" class="denomination-total" id="total-020" value="RM 0.00" readonly>
+            </div>
+
+            <div class="denomination-row">
+                <span class="denomination-label">10 sen</span>
+                <input type="number" class="qty-input" id="qty-010" data-value="0.10" min="0" placeholder="0" step="1">
+                <span class="equals-sign">=</span>
+                <input type="text" class="denomination-total" id="total-010" value="RM 0.00" readonly>
+            </div>
+
+            <div class="denomination-row">
+                <span class="denomination-label">5 sen</span>
+                <input type="number" class="qty-input" id="qty-005" data-value="0.05" min="0" placeholder="0" step="1">
+                <span class="equals-sign">=</span>
+                <input type="text" class="denomination-total" id="total-005" value="RM 0.00" readonly>
+            </div>
+        </div>
+
+        <!-- Done Button -->
+        <button class="btn-done" id="btnDone">> DONE</button>
+    </div>
+
+    <!-- Summary Modal -->
+    <div class="summary-overlay" id="summaryOverlay">
+        <div class="summary-modal">
+            <div class="summary-title">// SUMMARY REPORT</div>
+
+            <div class="summary-section">
+                <div class="summary-heading">[ Paper Money Breakdown ]</div>
+                <div id="paperSummary"></div>
+            </div>
+
+            <div class="summary-section">
+                <div class="summary-heading">[ Coins Breakdown ]</div>
+                <div id="coinsSummary"></div>
+            </div>
+
+            <div class="summary-total-counted">
+                <span>TOTAL COUNTED</span>
+                <span id="totalCounted">RM 0.00</span>
+            </div>
+
+            <div class="summary-section">
+                <div class="summary-heading">[ Expected vs Actual ]</div>
+                <div class="summary-row">
+                    <span class="label">Expected (System)</span>
+                    <span class="value" id="summaryExpected">RM 0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span class="label">In Drawer (Counted)</span>
+                    <span class="value" id="summaryCounted">RM 0.00</span>
+                </div>
+            </div>
+
+            <div id="overUnderResult" class="summary-over-under"></div>
+
+            <button class="btn-close" id="btnClose">> CLOSE</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
