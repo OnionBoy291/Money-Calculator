@@ -267,6 +267,80 @@ body {
     flex-shrink: 0;
 }
 
+/* Manual Deductions Section */
+.deduction-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 8px;
+}
+
+.deduction-row:last-child {
+    margin-bottom: 0;
+}
+
+.deduction-row .note-input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    background: #1e293b;
+    border: 1px solid rgba(217, 119, 6, 0.12);
+    border-radius: 8px;
+    color: #f1f5f9;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    outline: none;
+    transition: all 0.25s ease;
+}
+
+.deduction-row .note-input::placeholder {
+    color: #475569;
+    font-weight: 400;
+    opacity: 1;
+}
+
+.deduction-row .note-input:focus {
+    border-color: #d97706;
+    box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.1);
+}
+
+.deduction-row .amount-input {
+    width: 96px;
+    min-width: 96px;
+    flex-shrink: 0;
+    padding: 10px 8px;
+    background: #1e293b;
+    border: 1px solid rgba(217, 119, 6, 0.12);
+    border-radius: 8px;
+    color: #fbbf24;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: right;
+    outline: none;
+    transition: all 0.25s ease;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+}
+
+.deduction-row .amount-input::-webkit-outer-spin-button,
+.deduction-row .amount-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.deduction-row .amount-input:focus {
+    border-color: #d97706;
+    box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.1);
+}
+
+.deduction-row .amount-input::placeholder {
+    color: #475569;
+    font-weight: 400;
+    opacity: 1;
+}
+
 .btn-done {
     display: block;
     width: 100%;

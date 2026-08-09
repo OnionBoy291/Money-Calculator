@@ -103,6 +103,25 @@ function formatRM(amount) {
     return `${sign}RM ${Math.abs(amount).toFixed(2)}`;
 }
 
+// Read manual deductions (note + amount)
+function getDeductions() {
+    const deductions = [];
+    for (let i = 1; i <= 3; i++) {
+        const note = document.getElementById(`note-${i}`).value.trim();
+        const amount = Math.round((parseFloat(document.getElementById(`amount-${i}`).value) || 0) * 100) / 100;
+        if (amount > 0) {
+            deductions.push({ note: note || `Deduction ${i}`, amount });
+        }
+    }
+    return deductions;
+}
+
+// Prevent negative values on deduction amount inputs
+document.querySelectorAll('.amount-input').forEach(input => {
+    preventNegative(input);
+    input.addEventListener('input', updateTotals);
+});
+
 // Show summary
 function showSummary() {
     const data = calculateAll();
@@ -127,22 +146,37 @@ function showSummary() {
     }
     document.getElementById('coinsSummary').innerHTML = coinsHtml;
 
+    // Manual deductions
+    const deductions = getDeductions();
+    const totalDeductions = Math.round(deductions.reduce((sum, d) => sum + d.amount, 0) * 100) / 100;
+    const deductionsHtml = deductions.length > 0
+        ? deductions.map(d => `<div class="summary-row"><span class="label">${d.note} : ${formatRM(d.amount)}</span><span class="value">- ${formatRM(d.amount)}</span></div>`).join('')
+        : '<div class="summary-row"><span class="label" style="opacity:0.5">No manual deductions</span></div>';
+    document.getElementById('deductionsSummary').innerHTML = deductionsHtml;
+    document.getElementById('summaryDeductions').textContent = `- ${formatRM(totalDeductions)}`;
+    document.getElementById('summaryDeductionsTotal').textContent = `- ${formatRM(totalDeductions)}`;
+
+    // New expected = system expected minus total deductions
+    const newExpected = Math.round((data.expected - totalDeductions) * 100) / 100;
+    document.getElementById('summaryNewExpected').textContent = formatRM(newExpected);
+
     // Totals
     document.getElementById('totalCounted').textContent = formatRM(data.grandTotal);
     document.getElementById('summaryExpected').textContent = formatRM(data.expected);
     document.getElementById('summaryCounted').textContent = formatRM(data.grandTotal);
 
-    // Over/Short
+    // Over/Short uses new expected
+    const diff = Math.round((data.grandTotal - newExpected) * 100) / 100;
     const resultDiv = document.getElementById('overUnderResult');
-    if (Math.abs(data.difference) < 0.005) {
+    if (Math.abs(diff) < 0.005) {
         resultDiv.className = 'summary-over-under exact';
         resultDiv.innerHTML = 'EXACT &mdash; Balanced! <span style="font-size:16px;display:block;margin-top:5px;">RM 0.00</span>';
-    } else if (data.difference > 0) {
+    } else if (diff > 0) {
         resultDiv.className = 'summary-over-under over';
-        resultDiv.innerHTML = `OVER <span style="font-size:16px;display:block;margin-top:5px;">(+${formatRM(data.difference).replace('-', '')})</span>`;
+        resultDiv.innerHTML = `OVER <span style="font-size:16px;display:block;margin-top:5px;">(+${formatRM(diff).replace('-', '')})</span>`;
     } else {
         resultDiv.className = 'summary-over-under short';
-        resultDiv.innerHTML = `SHORT <span style="font-size:16px;display:block;margin-top:5px;">(${formatRM(data.difference)})</span>`;
+        resultDiv.innerHTML = `SHORT <span style="font-size:16px;display:block;margin-top:5px;">(${formatRM(diff)})</span>`;
     }
 
     summaryOverlay.classList.add('active');
